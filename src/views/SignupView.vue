@@ -9,7 +9,7 @@
             type="text"
             v-model="nombre"
             :showErrors="nombreError"
-            :errorsList="['El nombre debe tener más de 3 caracteres']"
+            :errorsList="['El nombre debe tener más de 4 caracteres']"
         />
         <CustomInput
             label="Email"
@@ -52,15 +52,14 @@
 <script>
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
-import NProgress from "nprogress";
-
-const limitNombre = 3;
-
+import NProgress from "nprogress"
+import supabase from "@/mixins/supabase.js"
+const limitNombre = 4;
 export default {
   name: 'SignupView',
   mounted() {
-    console.log(process.env.VUE_APP_URL_API)
   },
+  mixins: [supabase],
   data() {
    return {
      nombre: '',
@@ -82,23 +81,19 @@ export default {
       this.nombreError = false;
       this.emailError = false;
       this.passwordError = false;
-
       // Nombre
       // Limite de caracteres a limitNombre
       if (this.nombre.trim().length < limitNombre) {
         this.nombreError = true;
       }
-
       // Email
       if (!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.email)) {
         this.emailError = true;
       }
-
       // Password
       if (this.password.trim().length === 0 || this.password != this.password2) {
         this.passwordError = true;
       }
-
       if (!this.nombreError &&
           !this.emailError &&
           !this.passwordError
@@ -109,6 +104,25 @@ export default {
     },
     createUser: async function () {
       NProgress.start();
+      const { user, session, error } = await this.supabase.auth.signUp({
+        email: this.email,
+        password: this.password,
+      })
+      if (user === null) {
+        // Supabase devuelve un error
+        alert(error.message);
+      } else {
+        // Guardamos el nombre
+        await this.supabase
+            .from('social_network-profile')
+            .insert([
+              { name: this.nombre, user_id: session.user.id }
+            ])
+        // Cambiamos a la vista de Login
+        this.$router.push({name: 'login', query: {signup: true}});
+      }
+      NProgress.done()
+      return session;
     }
   }
 }

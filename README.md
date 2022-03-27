@@ -1,4 +1,4 @@
-# whatsup
+# beauty-salon
 
 ## Project setup
 ```

@@ -1,28 +1,34 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
-import SignupView from '../views/SignupView.vue'
+import { createRouter, createWebHistory } from "vue-router";
 import HomeView from '@/views/HomeView'
+import TreatmentsView from '@/views/TreatmentsView'
+import ServicesView from '@/views/ServicesView'
+import ContactView from '@/views/ContactView'
 
 const routes = [{
-        path: '/',
-        name: 'login',
-        component: LoginView
-    },
-    {
-        path: '/registro/',
-        name: 'signup',
-        component: SignupView
-    },
-    {
-        path: '/home/',
-        name: 'home',
-        component: HomeView
-    }
-]
+    path: "/",
+    name: "Home",
+    component: HomeView,
+}, {
+    path: "/tratamientos",
+    name: "Treatments",
+    component: TreatmentsView,
+}, {
+    path: "/servicios",
+    name: "Services",
+    component: ServicesView,
+}, {
+    path: "/contacto",
+    name: "Contact",
+    component: ContactView,
+}, ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes
-})
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+});
 
-export default router
+// Change document titles
+
+// Route guard for auth routes
+
+export default router;

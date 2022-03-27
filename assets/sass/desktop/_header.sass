@@ -1,1 +1,78 @@
-// header
+header
+    height: 5.5rem
+    background-color: $white
+    border-bottom: 0.01rem solid $colorLight
+    position: relative
+    z-index: 999
+    position: sticky
+    top: 0
+    left: 0
+    .header
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding-left: 8%
+        padding-right: 8%
+        padding-top: 0.3rem
+        img
+            max-width: 11.5rem
+        &__links
+            position: relative
+            a
+                position: relative
+                text-transform: uppercase
+                transition: color 0.2s ease-in-out
+                font-size: $font-med
+                &:not(:last-child)
+                    margin-right: 1.3rem
+
+                &::before
+                    content: ""
+                    display: block
+                    height: 3px
+                    left: 0
+                    right: 0
+                    position: absolute
+                    bottom: -8px
+                    background: $green
+                    opacity: 0
+                    transition: opacity 0.2s ease-in-out
+
+                .active,
+                &:hover
+                    &::before
+                        opacity: 1
+
+        .menu
+            display: flex
+            flex-direction: column
+            float: right
+            position: fixed
+            width: 100%
+            max-width: 250px
+            height: 100%
+            top: 5.5rem
+            right: 0
+            background-color: $white
+            a
+                margin-left: 25%
+                text-transform: uppercase
+
+        // tablet menu
+        &__menu
+            >span
+                display: block
+                width: 26px
+                height: 3px
+                background-color: $darkblue
+                transition: all 300ms ease-in-out
+                transform-origin: 4px 2px
+                &:not(:last-child)
+                    margin-bottom: 3px
+            &.open
+                > span:first-child
+                    transform: rotate(45deg)
+                > span:nth-child(2)
+                    opacity: 0
+                > span:last-child
+                    transform: rotate(-45deg)
